@@ -1,54 +1,74 @@
-NAME = libasm.a
-LIBSRC = libasm.asm libasm_bonus.asm
-LIBOBJS = libasm.o libasm_bonus.o
+LIBNAME		=  libasm.a
 
-ASSEMBLER = nasm
+SRCS		=  libasm.asm
+SRCS		+= libasm_bonus.asm
+
+TEST_SRCS	=  testlib.c
+TEST_SRCS	+= sort-lines.c
+
+INCLUDES	= -I includes
+LIBASM		= -L. -lasm
+
+DIR_SRC		= srcs
+DIR_OBJ		= objs
+
+DIR_TEST	= tests
+DIR_TEST_SRC = $(DIR_TEST)
+DIR_TEST_OBJ = $(DIR_TEST)/objs
+
+vpath %.asm $(DIR_SRC)
+vpath %.c $(DIR_TEST_SRC)
+
+OBJS = $(patsubst %.asm, $(DIR_OBJ)/%.o, $(SRCS))
+TEST_OBJS = $(patsubst %.c, $(DIR_TEST_OBJ)/%.o, $(TEST_SRCS))
+TEST_EXES = $(patsubst %.c, $(DIR_TEST)/%, $(TEST_SRCS))
+
+GREEN=\e[0;32m
+RED=\e[0;31m
+BLUE=\e[0;34m
+BRIGHT=\e[1m
+END=\e[0m
+
+ASSEMBLER = nasm -f elf64
+ASM_OPT = -g
+
 CC = gcc -Werror -Wall -Wextra
+CC_OPT = -g3
 
-GREEN=\033[0;32m
-RED=\033[0;31m
-BLUE=\033[0;34m
-END=\033[0m
-BOLD_START=\e[1m
-BOLD_END=\e[0m
+all: $(LIBNAME) tests
+bonus: $(LIBNAME)
 
-all: $(NAME) testlib tests/hello-syscall tests/hello-printf
-bonus: $(NAME)
+$(LIBNAME): $(OBJS)
+	$(AR) -rcs $(LIBNAME) $(OBJS)
 
+$(DIR_OBJ)/%.o: %.asm
+	mkdir -p $(DIR_OBJ)
+	$(ASSEMBLER) $(ASM_OPT) $< -o $@
 
-tests/hello-syscall.o: tests/hello-syscall.asm
-	nasm -f elf64 -g tests/hello-syscall.asm
+tests: $(TEST_EXES)
 
-tests/hello-syscall: tests/hello-syscall.o
-	ld -g tests/hello-syscall.o -o tests/hello-syscall
+# We don't really need this empty rule except to prevent 'make' from deleting
+# the intermediate tests objets. The variable TEST_OBJS is not used otherwise.
+$(TEST_OBJS):
 
-tests/hello-printf.o: tests/hello-printf.asm
-	nasm -f elf64 tests/hello-printf.asm
+$(DIR_TEST)/%: $(DIR_TEST_OBJ)/%.o $(LIBNAME)
+	$(CC) $(CC_OPT) $< -o $@ $(LIBASM)
 
-tests/hello-printf: tests/test-printf.c tests/hello-printf.o
-	gcc tests/test-printf.c tests/hello-printf.o -o tests/hello-printf
+$(DIR_TEST_OBJ)/%.o: %.c
+	mkdir -p $(DIR_TEST_OBJ)
+	$(CC) $(CC_OPT) $(INCLUDES) -c $< -o $@
 
-
-$(LIBOBJS): %.o: %.asm
-	$(ASSEMBLER) -f elf64 -g $<
-
-$(NAME): $(LIBOBJS)
-	$(AR) -rcs $(NAME) $(LIBOBJS)
-
-testlib: $(NAME) testlib.c
-	$(CC) -g3 testlib.c -L . -lasm -o testlib
 
 clean:
-	$(RM) *.o
-	$(RM) tests/*.o
-	
+	$(RM) $(DIR_OBJ)/*.o
+	$(RM) $(DIR_TEST_OBJ)/*.o
+		
 fclean: clean
-	$(RM) $(NAME)
-	$(RM) testlib
-	$(RM) tests/hello-syscall
-	$(RM) tests/hello-printf
+	$(RM) $(LIBNAME)
+	$(RM) $(DIR_TEST)/testlib
+	$(RM) $(DIR_TEST)/sort-lines
 	
 re: fclean
 	$(MAKE)
 
-.PHONY: clean fclean re all bonus
+.PHONY: clean fclean re all bonus tests
