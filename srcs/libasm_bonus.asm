@@ -275,9 +275,12 @@ ft_list_size:
 ; input:  rdi = t_list *list
 ; output: rax = array addr, rdx = array size
 create_array_from_list:
-	push	rdi					; save list and align stack on 16 bytes boundary
 	test	rdi, rdi
-	jz		.return
+	jnz		.notnull
+	xor		rax, rax
+	ret
+.notnull:
+	push	rdi					; save list and align stack on 16 bytes boundary
 	call	ft_list_size
 	shl		rax, 3				; size of array in bytes: list_size * 8
 	mov		rdi, rax

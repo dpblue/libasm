@@ -6,7 +6,7 @@
 /*   By: ade-sarr <ade-sarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 18:50:27 by ade-sarr          #+#    #+#             */
-/*   Updated: 2026/01/28 02:10:19 by ade-sarr         ###   ########.fr       */
+/*   Updated: 2026/01/28 16:17:02 by ade-sarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,36 +46,6 @@ void	gnlbuf_release_by_fd(t_gnl_buflst **plist, int fd)
 			gnlbuf_release(plist, node);
 	}
 }
-
-/*
-char	*ft_strchr(const char *s, int c)
-{
-	const unsigned char	chr = c;
-
-	while (*s)
-	{
-		if (*s == chr)
-			return ((char *)s);
-		s++;
-	}
-	if (chr == '\0')
-		return ((char *)s);
-	return (NULL);
-}
-
-size_t	ft_strlen(const char *str)
-{
-	size_t	len;
-
-	len = 0;
-	while (*str)
-	{
-		str++;
-		len++;
-	}
-	return (len);
-}
-*/
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {

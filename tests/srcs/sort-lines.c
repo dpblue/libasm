@@ -22,7 +22,8 @@ int main(int argc, char **argv)
 	char	*line;
 
 	if (argc > 1) {
-		printf("sort-lines reads from stdin and write to stdout after sorting text lines in ascending order\n");
+		printf("sort-lines reads from stdin and writes to stdout after sorting text lines in ascending order\n"
+				"using libasm and a specific version of get_next_line that use libasm.\n");
 		return -1;
 	}
 	

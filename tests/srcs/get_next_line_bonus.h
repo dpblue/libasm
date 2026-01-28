@@ -6,11 +6,13 @@
 /*   By: ade-sarr <ade-sarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 18:49:51 by ade-sarr          #+#    #+#             */
-/*   Updated: 2026/01/28 02:19:25 by ade-sarr         ###   ########.fr       */
+/*   Updated: 2026/01/28 17:10:25 by ade-sarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* GNL with doubly linked list */
+/* GNL with doubly linked list
+		special version that use libasm (ft_strlen, ft_strchr and ft_write)
+*/
 
 #ifndef GET_NEXT_LINE_BONUS_H
 # define GET_NEXT_LINE_BONUS_H
@@ -33,8 +35,6 @@ struct s_gnl_buflst
 	char			buffer[BUFFER_SIZE + 1];
 };
 
-//size_t	ft_strlen(const char *str);
-//char	*ft_strchr(const char *s, int c);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 char	*ft_strjoin_ex2(char const *s1, char const *s2, char const *s2endptr);
 
