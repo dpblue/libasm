@@ -72,6 +72,7 @@
 	default rel
 	
 	global ft_atoi_base, ft_list_push_front, ft_list_size, ft_list_remove_if, ft_list_sort, get_valid_base
+	global ft_strchr, ft_skip_chars
 
 	extern malloc, free, qsort, ft_strlen
 
@@ -117,10 +118,10 @@ ft_strchr:
 	pop		rdi
 	ret
 
-; char *skip_chars(char *str, char *chr2skip)
+; char *ft_skip_chars(char *str, char *chr2skip)
 ; returns the first position witch is not a char belonging to chr2skip 
 ; preserves registers (except flags and rax)
-skip_chars:
+ft_skip_chars:
 	push	rdi
 	push	rsi
 	push	rcx
@@ -181,7 +182,7 @@ get_valid_base:
 ; get sign and skip blanks: return sign in rax & adjused str addr in rdi
 ft_atoi_getsign:
 	lea		rsi, [blank_chars]
-	call	skip_chars
+	call	ft_skip_chars
 	mov		rdi, rax
 	cmp		byte [rax], '+'
 	je		.plus

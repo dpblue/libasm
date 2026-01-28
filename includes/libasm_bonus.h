@@ -29,4 +29,10 @@ void	ft_list_sort(t_list **begin_list, int (*cmp)(void *data1, void *data2));
 void	ft_list_remove_if(t_list **begin_list, void *data_ref,
 			int (*cmp)(void *datx, void *data_ref), void (*free_fct)(void *datx));
 
+// Additional functions
+char *	ft_strchr(const char *str, int c);
+char *	ft_skip_chars(char *str, char *chr2skip);
+
+//size_t	ft_strlcpy(char *dst, const char *src, size_t size);
+//int		strncmp(const char s1, const char s2, size_t n);
 #endif
