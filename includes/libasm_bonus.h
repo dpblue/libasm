@@ -32,7 +32,7 @@ void	ft_list_remove_if(t_list **begin_list, void *data_ref,
 // Additional functions
 char *	ft_strchr(const char *str, int c);
 char *	ft_skip_chars(char *str, char *chr2skip);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 //size_t	ft_strlcpy(char *dst, const char *src, size_t size);
-//int		strncmp(const char s1, const char s2, size_t n);
 #endif

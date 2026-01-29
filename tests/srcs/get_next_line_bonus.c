@@ -6,7 +6,7 @@
 /*   By: ade-sarr <ade-sarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 18:49:28 by ade-sarr          #+#    #+#             */
-/*   Updated: 2026/01/28 01:59:58 by ade-sarr         ###   ########.fr       */
+/*   Updated: 2026/01/29 21:18:24 by ade-sarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ static char	*gnl_read(int fd, char *buffer, char **pbufnextline, bool *eof)
 	}
 	while (!endline)
 	{
-		nb_read = ft_read(fd, buffer, BUFFER_SIZE);
+		nb_read = ft_read(fd, buffer, GNL_BUFFER_SIZE);
 		if (nb_read == 0)
 			return (line);
 		if (nb_read < 0)

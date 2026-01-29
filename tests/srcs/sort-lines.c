@@ -32,13 +32,9 @@ int main(int argc, char **argv)
 
 	ft_list_sort(&list, (t_cmp)ft_strcmp);
 
-	t_list	*elem = list;
-	while (elem)
-	{
+	for (t_list	*elem = list; elem; elem = elem->next)
 		ft_write(1, elem->data, ft_strlen(elem->data));
-		elem = elem->next;
-	}
 
 	freelist(list, free);
-	get_next_line(-1);
+	get_next_line(GNL_FREE_ALL_BUFFERS);
 }

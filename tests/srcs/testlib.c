@@ -189,7 +189,7 @@ int	strcmp_begin_with(void *str, void *begin)
 		return 0;
 	if (str == NULL || begin == NULL)
 		return -1;
-	return strncmp(str, begin, ft_strlen(begin));
+	return ft_strncmp(str, begin, ft_strlen(begin));
 }
 
 void	test_ft_list()

@@ -54,7 +54,7 @@
 ; ---------------------------------------------------------------------------------
 
 
-	global ft_read, ft_write, ft_strlen, ft_strcpy, ft_strcmp, ft_strdup
+	global ft_read, ft_write, ft_strlen, ft_strcpy, ft_strcmp, ft_strncmp, ft_strdup
 
 	extern __errno_location, malloc
 
@@ -162,6 +162,48 @@ ft_strcmp:
 	inc		rdi				; next char addr for s1
 	inc		rsi				; next char addr for s2
 	jmp		.loop
+.end:
+	mov		rax, rdx
+	sub		rax, rcx		; return value (rax) = dl - cl
+	ret
+
+; int		ft_strncmp(const char *s1, const char *s2, size_t n)
+ft_strncmp:
+	test	rdx, rdx
+	jz		.return_0
+	test	rdi, rdi		; test s1
+	jnz		.s1ok
+	test	rsi, rsi		; test s2
+	jnz		.s2sup
+.return_0:
+	xor		rax, rax		; s1 & s2 both null or n == 0 : return 0
+	ret
+.s2sup:
+	mov		rax, -1			; s1 null & s2 ok: return -1
+	ret
+.s1ok:
+	test	rsi, rsi		; test s2
+	jnz		.begin
+	mov		rax, 1			; s1 ok & s2 null: return 1
+	ret
+
+.begin:						; s1 & s2 not null
+	mov		rax, rdx		; rax = n
+	xor		rcx, rcx		; rcx = 0
+	xor		rdx, rdx		; rdx = 0
+.loop:
+	mov		dl, [rdi]		; dl = current char of s1
+	mov		cl, [rsi]		; cl = current char of s2
+	cmp		dl, cl			; dl == cl ?
+	jne		.end			; no -> goto end
+	test	dl, dl			; dl == 0 ?
+	jz		.end			; yes -> goto end
+	test	cl, cl			; cl == 0 ?
+	jz		.end			; yes -> goto end
+	inc		rdi				; next char addr for s1
+	inc		rsi				; next char addr for s2
+	dec		rax
+	jnz		.loop
 .end:
 	mov		rax, rdx
 	sub		rax, rcx		; return value (rax) = dl - cl

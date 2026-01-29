@@ -6,7 +6,7 @@
 /*   By: ade-sarr <ade-sarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 18:49:51 by ade-sarr          #+#    #+#             */
-/*   Updated: 2026/01/28 17:10:25 by ade-sarr         ###   ########.fr       */
+/*   Updated: 2026/01/29 19:40:40 by ade-sarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@
 #ifndef GET_NEXT_LINE_BONUS_H
 # define GET_NEXT_LINE_BONUS_H
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 4096
+# ifndef GNL_BUFFER_SIZE
+#  define GNL_BUFFER_SIZE 4096
 # endif
+
+# define GNL_FREE_ALL_BUFFERS -1
 
 # include "libasm_bonus.h"
 # include <unistd.h>
@@ -32,7 +34,7 @@ struct s_gnl_buflst
 	t_gnl_buflst	*pred;
 	int				fd;
 	char			*bufnextline;
-	char			buffer[BUFFER_SIZE + 1];
+	char			buffer[GNL_BUFFER_SIZE + 1];
 };
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
