@@ -9,38 +9,39 @@
 
 void	test_ft_read_write_strcpy()
 {
-	static const char * const ft_msg = "[libasm] Enter a phrase and terminate by enter\n[ft_read()]  ";
+	static const char * const promptMsg = "Enter a phrase and terminate by enter\n[ft_read()]  "NORM;
 	int buflen = 256;
 	char buffer[buflen];
 	char buffer2[buflen];
 	char buffer3[buflen];
 	
-	ft_write(1, ft_msg, ft_strlen(ft_msg));
+	ft_write(1, promptMsg, ft_strlen(promptMsg));
 	ssize_t readret = ft_read(0, buffer, buflen-1);
 	if (readret < 0) {
-		printf("[!] error on ft_read(): %s\n", strerror(errno));
+		printf(BRIGHT DARK"[!] error on ft_read(): %s\n", strerror(errno));
 		return;
 	}
 	else
-		printf(" (%li bytes read)\n", readret);
+		printf(BRIGHT DARK" (%li bytes read; copy to write buffer...)\n", readret);
 	
 	buffer[readret] = '\0';
 	ft_strcpy(buffer3, ft_strcpy(buffer2, buffer));
 	
-	ft_write(1, "[ft_write()] ", 13);
+	ft_write(1, "[ft_write()] "NORM, 18);
 	ssize_t writeret = ft_write(1, buffer3, readret);
+	ft_write(1, BRIGHT DARK, 8);
 	if (writeret < 0) {
 		printf("[!] error on ft_write(): %s\n", strerror(errno));
 		return;
 	}
 	if ((readret = ft_read(1000, buffer3, 10)) < 0)
-		printf("[test bad fd=1000] error on ft_read(): %s\n", strerror(errno));
+		printf("[test with bad fd=1000] error on ft_read(): %s\n", strerror(errno));
 	else
-		printf("[test bad fd=1000] NO error on ft_read(), test fails ! (returns: %li)\n", readret);
+		printf("[test with bad fd=1000] NO error on ft_read(), test fails ! (returns: %li)\n", readret);
 	if ((writeret = ft_write(1000, buffer3, 10)) < 0)
-		printf("[test bad fd=1000] error on ft_write(): %s\n", strerror(errno));
+		printf("[test with bad fd=1000] error on ft_write(): %s\n", strerror(errno));
 	else
-		printf("[test bad fd=1000] NO error on ft_write(), test fails ! (returns: %li)\n", writeret);
+		printf("[test with bad fd=1000] NO error on ft_write(), test fails ! (returns: %li)\n", writeret);
 }
 
 void	test_libc()
@@ -58,7 +59,7 @@ void	test_libc()
 	else
 		printf(" (%li bytes read)\n", readret);
 	
-	ft_write(1, "[write()] ", 10);
+	write(1, "[write()] ", 10);
 	ssize_t writeret = write(1, buffer, readret);
 	if (writeret < 0) {
 		printf("[!] error on write(): %s\n", strerror(errno));
@@ -92,6 +93,14 @@ void	test_ft_strcmp()
 			strs[i], strs[i+1], ft_strcmp(strs[i], strs[i+1]));
 		printf("   strcmp(\""NORM"%s"BRIGHT DARK"\", \""NORM"%s"BRIGHT DARK"\") = "NORM"%i"BRIGHT DARK"\n",
 			strs[i], strs[i+1], strcmp(strs[i], strs[i+1]));
+	}
+	printf("\n");
+	for (int i = 3*2, n=5; n <= 6; n++)
+	{
+		printf("ft_strncmp(\""NORM"%s"BRIGHT DARK"\", \""NORM"%s"BRIGHT DARK"\", %i) = "NORM BRIGHT"%i"BRIGHT DARK"\n",
+				strs[i], strs[i+1], n, ft_strncmp(strs[i], strs[i+1], n));
+		printf("   strncmp(\""NORM"%s"BRIGHT DARK"\", \""NORM"%s"BRIGHT DARK"\", %i) = "NORM"%i"BRIGHT DARK"\n",
+				strs[i], strs[i+1], n, strncmp(strs[i], strs[i+1], n));
 	}
 }
 
@@ -231,9 +240,7 @@ int	main()
 	test_ft_strcmp();
 	printf("\n");
 	test_ft_strdup();
-	//test_ft_read_write_strcpy();
-	//printf("\n");
-	//test_libc();
+	
 	printf("\n"END LYELLOW ITALIC UNDERLN"    "NUNDER
 		"libasm: ft_atoi_base"UNDERLN"    "NUNDER"\n\n"END LYELLOW DARK);
 	test_ft_atoi_base();
@@ -242,5 +249,10 @@ int	main()
 		"libasm ft_list_xxx: push_front, list_size, list_sort, remove_if"
 		UNDERLN"    \n\n"END LYELLOW DARK);
 	test_ft_list();
+	
+	printf("\n"END LYELLOW ITALIC UNDERLN"    "NUNDER
+		"libasm: ft_read, ft_write, ft_strcpy, ft_strlen"UNDERLN"    "END LYELLOW DARK"\n\n");
+	test_ft_read_write_strcpy();
+	//test_libc();
 	printf(END);	
 }
